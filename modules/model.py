@@ -1,15 +1,3 @@
-"""
-model.py - ML models: salary prediction, clustering, skill gap analysis
-FIX SUMMARY (v2):
-  1. Added location as an encoded feature (strong salary signal)
-  2. Replaced LabelEncoder for experience with ordinal encoding (correct order)
-  3. Added continuous experience_years as a numeric feature
-  4. Added XGBoost / HistGradientBoosting as stronger base models
-  5. Added StackingRegressor as best model ensemble
-  6. Log-transform salary target (reduces skew, improves R²)
-  7. Added cross-validated hyperparameter tuning for RF
-  8. Removed broken feature_names index bug in feature importance
-"""
 import numpy as np
 import pandas as pd
 from sklearn.ensemble import (RandomForestRegressor, GradientBoostingRegressor,
