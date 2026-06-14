@@ -9,9 +9,9 @@ from modules.recommender import (
 
 app = Flask(__name__)
 
-# ==========================
+
 # Load Dataset
-# ==========================
+
 
 print("Loading jobs dataset...")
 
@@ -21,9 +21,9 @@ df = data["df"]
 
 print("Jobs Loaded:", len(df))
 
-# ==========================
+
 # Train Salary Model
-# ==========================
+
 
 salary_model = SalaryPredictor()
 
@@ -32,17 +32,17 @@ result = salary_model.train(df)
 print("Model Training Complete")
 print(result)
 
-# ==========================
+
 # Home Page
-# ==========================
+
 
 @app.route("/")
 def home():
     return render_template("index.html")
 
-# ==========================
+
 # Salary Prediction API
-# ==========================
+
 
 @app.route("/predict_salary", methods=["POST"])
 def predict_salary():
@@ -61,9 +61,9 @@ def predict_salary():
 
     return jsonify(result)
 
-# ==========================
+
 # Skill Gap API
-# ==========================
+
 
 @app.route("/skill_gap", methods=["POST"])
 def skill_gap():
@@ -80,9 +80,9 @@ def skill_gap():
 
     return jsonify(result)
 
-# ==========================
+
 # Similar Roles API
-# ==========================
+
 
 @app.route("/similar_roles", methods=["POST"])
 def get_similar_roles():
@@ -95,9 +95,9 @@ def get_similar_roles():
 
     return jsonify(result)
 
-# ==========================
+
 # Roadmap API
-# ==========================
+
 
 @app.route("/roadmap", methods=["POST"])
 def roadmap():
