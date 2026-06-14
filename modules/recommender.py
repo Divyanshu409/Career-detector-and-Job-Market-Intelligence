@@ -1,6 +1,4 @@
-"""
-recommender.py - Career recommendation engine using cosine similarity + skill gap
-"""
+
 import numpy as np
 import pandas as pd
 from sklearn.preprocessing import MultiLabelBinarizer
