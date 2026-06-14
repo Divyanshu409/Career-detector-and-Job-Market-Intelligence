@@ -52,7 +52,7 @@ class SalaryPredictor:
                 ('ridge', Ridge(alpha=10.0)),
             ],
             final_estimator=Ridge(alpha=1.0),
-            cv=5,
+            cv=3,
             n_jobs=-1
         )
         self.models = {**self.base_models, 'Stacking Ensemble': self.stacking_model}
@@ -141,7 +141,7 @@ class SalaryPredictor:
         best_score = -np.inf
         self.best_model_name = None
 
-        n_cv = min(5, max(3, len(y) // 500))
+        n_cv = min(3, max(3, len(y) // 500))
 
         for name, mdl in self.models.items():
             try:
