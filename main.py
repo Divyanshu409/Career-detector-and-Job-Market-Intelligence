@@ -32,9 +32,9 @@ def main():
     print("\nDataset Statistics:")
     print(result["stats"])
 
-    # ----------------------------------
+    
     # Top Skills Analysis
-    # ----------------------------------
+    
     freq_df = skill_frequency_df(df)
 
     print("\nTop Skills:")
@@ -46,9 +46,9 @@ def main():
 
     print("\nCharts generated successfully.")
 
-    # ----------------------------------
+    
     # Salary Prediction
-    # ----------------------------------
+   
     predictor = SalaryPredictor()
 
     print("\nTraining salary prediction models...")
@@ -65,9 +65,9 @@ def main():
     print("\nSalary Prediction:")
     print(prediction)
 
-    # ----------------------------------
+   
     # Skill Gap Analysis
-    # ----------------------------------
+    
     gap = analyse_skill_gap(
         "data scientist",
         ["python", "sql", "pandas"]
@@ -76,17 +76,17 @@ def main():
     print("\nSkill Gap Analysis:")
     print(gap)
 
-    # ----------------------------------
+   
     # Similar Roles
-    # ----------------------------------
+    
     roles = similar_roles("data scientist")
 
     print("\nSimilar Roles:")
     print(roles)
 
-    # ----------------------------------
+   
     # Learning Path
-    # ----------------------------------
+    
     roadmap = generate_learning_path(
         "data scientist",
         ["python", "sql", "pandas"]
