@@ -30,7 +30,7 @@ class SalaryPredictor:
                                               learning_rate=0.05, min_samples_leaf=20,
                                               random_state=42),
         }
-        # FIX: stacking ensemble uses the 3 base models with Ridge as meta-learner
+        
         self.stacking_model = StackingRegressor(
             estimators=[
                 ('rf',  RandomForestRegressor(n_estimators=200, max_depth=10,
@@ -40,18 +40,18 @@ class SalaryPredictor:
                 ('ridge', Ridge(alpha=10.0)),
             ],
             final_estimator=Ridge(alpha=1.0),
-            cv=3,
+            cv=5,
             n_jobs=-1
         )
         self.models = {**self.base_models, 'Stacking Ensemble': self.stacking_model}
 
         self.mlb      = MultiLabelBinarizer()
         self.le_role  = LabelEncoder()
-        self.le_loc   = LabelEncoder()   # FIX: location encoder
+        self.le_loc   = LabelEncoder()   
         self.scaler   = StandardScaler()
         self.trained  = False
         self.feature_names = []
-        self.use_log_target = True  # FIX: log-transform target
+        self.use_log_target = True  
 
     def _build_features(self, df: pd.DataFrame, fit: bool = False) -> np.ndarray:
         if fit:
@@ -67,17 +67,17 @@ class SalaryPredictor:
             roles = roles.apply(lambda r: r if r in self.le_role.classes_ else 'other')
             role_enc = self.le_role.transform(roles)
 
-        # FIX: ordinal experience (correct numeric order, not alphabetical)
+        
         exp_ordinal = df['experience_ordinal'].fillna(2).values \
             if 'experience_ordinal' in df.columns \
             else df['experience_level'].map(EXPERIENCE_ORDINAL).fillna(2).values
 
-        # FIX: continuous experience years (stronger signal than ordinal buckets)
+        
         exp_years = df['experience_years'].fillna(3.0).values \
             if 'experience_years' in df.columns \
             else exp_ordinal * 2.0
 
-        # FIX: location encoding
+        
         if 'location_clean' in df.columns:
             locs = df['location_clean'].fillna('Unknown')
         elif 'location' in df.columns:
@@ -86,7 +86,7 @@ class SalaryPredictor:
             locs = pd.Series(['Unknown'] * len(df))
 
         if fit:
-            # FIX: fit on classes + 'Unknown' sentinel so inference never fails on unseen locs
+           
             self.le_loc.fit(pd.concat([locs, pd.Series(['Unknown'])], ignore_index=True))
             loc_enc = self.le_loc.transform(locs)
         else:
@@ -95,7 +95,7 @@ class SalaryPredictor:
 
         skill_count = df['skill_count'].fillna(0).values
 
-        # FIX: combined numeric block: role, exp_ordinal, exp_years, location, skill_count
+        
         num_features = np.column_stack([
             role_enc, exp_ordinal, exp_years, loc_enc, skill_count
         ])
@@ -117,7 +117,7 @@ class SalaryPredictor:
         X = self._build_features(train_df, fit=True)
         y = train_df['salary'].values
 
-        # FIX: log-transform salary target to reduce right-skew
+        
         if self.use_log_target:
             y_fit = np.log1p(y)
         else:
@@ -184,7 +184,7 @@ class SalaryPredictor:
 
         best = preds.get(self.best_model_name, list(preds.values())[0] if preds else 0)
 
-        # FIX: use HistGradientBoosting feature importance instead of RF
+       
         importance = {}
         try:
             rf = self.models['Random Forest']
