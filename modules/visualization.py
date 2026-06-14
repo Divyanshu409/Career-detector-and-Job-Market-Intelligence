@@ -1,6 +1,4 @@
-"""
-visualization.py - All chart generation, returns base64-encoded PNG strings
-"""
+
 import io, base64
 import numpy as np
 import pandas as pd
