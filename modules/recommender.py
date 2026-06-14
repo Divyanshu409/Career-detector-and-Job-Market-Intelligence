@@ -78,10 +78,7 @@ LEARNING_RESOURCES = {
 
 def generate_learning_path(career_goal: str, current_skills: list[str],
                             timeline_weeks: int = 24) -> dict:
-    """
-    Generate a phased, week-by-week learning roadmap.
-    Returns phases with skills, duration, and rationale.
-    """
+    
     gap_result = analyse_skill_gap(career_goal, current_skills)
     if 'error' in gap_result:
         return gap_result
@@ -154,10 +151,7 @@ def _skill_rationale(skill: str, role: str) -> str:
 def collaborative_skill_suggest(df: pd.DataFrame,
                                   user_skills: list[str],
                                   top_n: int = 8) -> list[dict]:
-    """
-    Find the most similar job postings to the user's skill profile,
-    then recommend skills those postings have that the user doesn't.
-    """
+   
     mlb = MultiLabelBinarizer()
     mat = mlb.fit_transform(df['skills_list'])
     classes = mlb.classes_
