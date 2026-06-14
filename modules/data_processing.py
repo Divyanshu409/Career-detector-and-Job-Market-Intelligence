@@ -1,6 +1,3 @@
-"""
-data_processing.py - Data cleaning, feature engineering, and skill extraction
-"""
 import pandas as pd
 import numpy as np
 import re
