@@ -1,5 +1,4 @@
-cat << 'PYEOF' > /home/claude/build_frontend.py
-content = r'''<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -52,6 +51,20 @@ nav{
   font-family:'Inter',sans-serif;font-size:.875rem;font-weight:500;
   cursor:pointer;transition:opacity .2s;}
 .nav-cta:hover{opacity:.85;}
+.nav-toggle{
+  display:none;background:none;border:none;cursor:pointer;
+  width:32px;height:32px;position:relative;z-index:1100;
+}
+.nav-toggle span{
+  display:block;position:absolute;left:4px;right:4px;height:2px;
+  background:var(--text1);border-radius:1px;transition:transform .25s,opacity .25s;
+}
+.nav-toggle span:nth-child(1){top:10px;}
+.nav-toggle span:nth-child(2){top:16px;}
+.nav-toggle span:nth-child(3){top:22px;}
+.nav-toggle.open span:nth-child(1){transform:translateY(6px) rotate(45deg);}
+.nav-toggle.open span:nth-child(2){opacity:0;}
+.nav-toggle.open span:nth-child(3){transform:translateY(-6px) rotate(-45deg);}
 
 /* ── SECTIONS ── */
 section{min-height:100vh;position:relative;}
@@ -414,10 +427,41 @@ footer a{color:var(--indigo2);text-decoration:none;}
 
 /* ── RESPONSIVE ── */
 @media(max-width:768px){
-  nav{padding:1rem;}.nav-links{display:none;}
+  nav{padding:1rem;}
+  .nav-toggle{display:block;}
+  .nav-links{
+    display:flex;flex-direction:column;gap:0;
+    position:fixed;top:0;right:0;height:100vh;width:min(78vw,300px);
+    background:rgba(5,11,31,0.97);backdrop-filter:blur(20px);
+    border-left:1px solid var(--border);
+    padding:5.5rem 2rem 2rem;
+    transform:translateX(100%);transition:transform .3s ease;
+    z-index:1050;
+  }
+  .nav-links.open{transform:translateX(0);}
+  .nav-links a{padding:1rem 0;border-bottom:1px solid var(--border);font-size:1rem;}
+  .nav-cta{font-size:.8rem;padding:.5rem 1rem;}
   .skills-grid,.salary-grid,.gap-grid,.rec-grid,.features-grid{grid-template-columns:1fr;}
+  .skill-lists{grid-template-columns:1fr;gap:1.5rem;}
+  .phase-item{grid-template-columns:44px 1fr;gap:1rem;}
+  .phase-connector{margin:44px auto 0;}
+  .model-name{min-width:0;flex:0 0 96px;font-size:.7rem;}
   .section-inner{padding:5rem 1.5rem;}
   .hero-stats{gap:1.5rem;}
+  .chart-wrap{height:260px;}
+  .result-value{font-size:2.5rem;}
+}
+
+@media(max-width:480px){
+  .hero-actions{flex-direction:column;width:100%;}
+  .btn-primary,.btn-ghost{width:100%;text-align:center;}
+  .hero-stats{gap:1rem 2rem;}
+  .model-name{flex:0 0 80px;font-size:.65rem;}
+  .model-val{min-width:60px;font-size:.7rem;}
+  .range-val{min-width:48px;font-size:.78rem;}
+  .nav-logo{font-size:1rem;max-width:60%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .phase-header{flex-direction:column;align-items:flex-start;}
+  .confidence-badge{font-size:.72rem;padding:.35rem .7rem;}
 }
 </style>
 </head>
@@ -426,14 +470,17 @@ footer a{color:var(--indigo2);text-decoration:none;}
 <!-- NAV -->
 <nav>
   <div class="nav-logo">Career detector and Job Market Intelligence<span style="color:var(--cyan)"></span></div>
-  <div class="nav-links">
-    <a href="#skills">Skills</a>
-    <a href="#salary">Salary</a>
-    <a href="#gap">Gap Analysis</a>
-    <a href="#recommender">Roles</a>
-    <a href="#roadmap">Roadmap</a>
+  <div class="nav-links" id="navLinks">
+    <a href="#skills" onclick="closeNav()">Skills</a>
+    <a href="#salary" onclick="closeNav()">Salary</a>
+    <a href="#gap" onclick="closeNav()">Gap Analysis</a>
+    <a href="#recommender" onclick="closeNav()">Roles</a>
+    <a href="#roadmap" onclick="closeNav()">Roadmap</a>
   </div>
   <button class="nav-cta" onclick="document.getElementById('salary').scrollIntoView({behavior:'smooth'})">Try Predictor</button>
+  <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" onclick="toggleNav()">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
 
 <!-- HERO -->
@@ -688,6 +735,18 @@ footer a{color:var(--indigo2);text-decoration:none;}
 </footer>
 
 <script>
+/* ═══════════════════════════════════════════════════
+   MOBILE NAV TOGGLE
+═══════════════════════════════════════════════════ */
+function toggleNav(){
+  document.getElementById('navLinks').classList.toggle('open');
+  document.getElementById('navToggle').classList.toggle('open');
+}
+function closeNav(){
+  document.getElementById('navLinks').classList.remove('open');
+  document.getElementById('navToggle').classList.remove('open');
+}
+
 /* ═══════════════════════════════════════════════════
    3D NEURAL NETWORK HERO ANIMATION
 ═══════════════════════════════════════════════════ */
@@ -1271,5 +1330,4 @@ function switchRoadmapTab(btn, role){
 renderRoadmap(defaultPath);
 </script>
 </body>
-</html>'''
-
+</html>
